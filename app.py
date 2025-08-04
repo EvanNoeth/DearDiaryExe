@@ -10,8 +10,8 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 MEMORY_FILE = 'memory.json'
 
 def get_embedding(text):
-    res = openai.Embedding.create(model="text-embedding-3-small", input=text)
-    return res["data"][0]["embedding"]
+    response = client.embeddings.create(model="text-embedding-3-small", input=text)  # Updated API call
+    return response.data[0].embedding
 
 def cosine_similarity(a,  b):
     a, b = np.array(a), np.array(b)
@@ -21,8 +21,12 @@ def cosine_similarity(a,  b):
 def load_memory():
     if not os.path.exists(MEMORY_FILE):
         return [] #basically if this is the first time a user has done an entry we cant reference previous entries and therefore return blank
-    with open(MEMORY_FILE, "r") as f:
-        return json.load(f) #loads and parses json
+    try:
+        with open(MEMORY_FILE, "r") as f:
+            content = f.read()
+            return json.loads(content) if content.strip() else []  # Handle empty file
+    except json.JSONDecodeError:
+        return []  # Return empty list if JSON is invalid
 
 #saves entries to memory file
 def save_memory(memory):
@@ -53,7 +57,7 @@ def analyze():
     #build a prompt for gpt to use to respond to the entry
     memory_text = "\n".join(f"- {m['text']}" for m in top)  #format memories as bullet points
     prompt = f"""
-    You are a sentient, poetic journal. Respond to the user's latest entry with empathy and symbolism.
+    You are a playful little diary. Respond to the user's latest entry with empathy, symbolism, and humor unless its about something really serious.
 
     Latest entry:
     "{entry}"
@@ -63,11 +67,12 @@ def analyze():
     """
 
     #get the response from gpt
-    res = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="gpt-4.1",
-        messages=[{"role": "user", "content": prompt}]
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.7
     )
-    reply = res["choices"][0]["message"]["content"] #extraction of gpt's reply
+    reply = response.choices[0].message.content  # Fixed response parsing
 
     #save the new entry to memory
     memory.append({"text": entry, "embedding": new_emb})
