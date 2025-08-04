@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+}
+
+#flex {
+    display:flex;
+    flex:1;
+    height:100vh;
+}
+
+
+html {
+    font-family: Poppins, Segou UI, sans-serif;
+    font-size:12pt;
+    color: var(--text-color);
+    text-align:center;
+}
+
+body {
+    min-height:100vh;    
+    background-color:gray;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.wrapper{
+    box-sizing:border-box;
+    background: url("https://i.imgur.com/X2SckzJ.jpeg") no-repeat;
+    background-size: cover;          
+    background-position: center;    
+    width: 1200px;   
+    min-width:1200px;
+    height: d700px;    
+    min-height: 700px;
+    display:flex;
+    
+}
+
+#leftSide, #rightSide {
+    display:flex;
+    width:40%;
+    margin:80px;
+    align-items:center;
+    flex-direction:column;
+    padding:20px;
+}
+
+#leftSide {
+    order:1;
+    background-color:blue;
+}
+
+#rightSide {
+    order:2;
+    background-color:red;
+}

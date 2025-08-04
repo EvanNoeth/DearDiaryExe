@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 :root{
-    --accent-color:blue;
-    --base-color:white;
-    --text-color:black;
+    --accent-color:#6a82ff;
+    --base-color:black;
+    --text-color:white;
     --input-color:#e4e4e4;
 }
 
@@ -22,13 +22,15 @@ body {
     min-height:100vh;
     background-color:gray;
     background-size:cover;
-    background-position:right;
     overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 }
 
 .wrapper {
     box-sizing:border-box;
-    background-color: var(--base-color);
+    background: url("https://i.imgur.com/HpWYeh9.jpeg");
     height:103vh;
     width: max(40%, 600px);
     padding:10px;
@@ -36,27 +38,51 @@ body {
     flex-direction:column;
     align-items:center;
     justify-content:center;
+    margin:15px;
+    
 }
 
 h1 {
     font-size:3rem;
     font-weight:900;
+    margin-bottom:70px;
+    margin-left:60px;
+    text-shadow:
+                0 0 5px #000000,
+                0 0 10px #000000,
+                0 0 20px #000000,
+                0 0 40px #000000,
+                0 0 0 #000000;
+}
+
+h2 {
+    margin-left:60px;
+    text-shadow:
+                0 0 5px #000000,
+                0 0 10px #000000,
+                0 0 20px #000000,
+                0 0 40px #000000,
+                0 0 80px #000000;
 }
 
 form {
     width:min(400px, 100%);
     margin-top:20px;
     margin-bottom:50px;
+    margin-left:60px;
     display:flex;
     flex-direction:column;
     align-items:center;
     gap:10px;
+     
+    
 }
 
 form > div {
     width:100%;
     display:flex;
     justify-content:center;
+      
 }
 
 form label {
@@ -69,7 +95,7 @@ form label {
     display:flex;
     justify-content:center;
     align-items:center;
-      border-radius: 10px 0 0 10px;
+    border-radius: 10px 0 0 10px;
 }
 form input {
     box-sizing:border-box;
@@ -121,11 +147,19 @@ form button:focus {
 
 a{
     text-decoration:none;
-    color:var(--accent-color);
+    color:red;
 }
 
 a:hover {
     text-decoration:underline;
+}
+
+.login {
+    margin-left:60px;
+    background-color: white;
+    border-radius: 15px;
+    color:black;
+    padding:7px;
 }
 
 @media(max-width:1100px){
