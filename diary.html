@@ -4,18 +4,51 @@
         <meta charset="UTF-8" />
         <title>Dear Diary.exe</title>
         <link rel="stylesheet" href="diary.css">
+        <script type="text/javascript" src="validation.js" defer></script>
+        <style>
+        @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+        </style>
     </head>
     <body>
         <div class="wrapper">
      
-        
         <aside id="leftSide">
-        left side
+            <h1>Past Entries</h1>
+            <nav id="pastEntries">
+                <ul id="entriesList"></ul>
+            </nav>
+            
         </aside>
         
         <aside id="rightSide">
-        right side
+        
+            <p id="date"></p>
+                <script>
+                let currentDate = new Date();
+
+                let day = String(currentDate.getDate()).padStart(2, '0');
+                let month = String(currentDate.getMonth() + 1).padStart(2, '0'); 
+                let year = currentDate.getFullYear();
+
+                let formattedDate = `${month}/${day}/${year}`;
+
+                document.getElementById("date").innerHTML = formattedDate;
+                </script>
+
+            <input type="text" id="title" name="title" maxlength="10" placeholder="Entry Title" />
+            <textarea id="textbox" name="textbox" rows="10" cols="50" placeholder="Dear Diary.exe..."></textarea>
+            <button id="submit" type="submit">Generate Response</button>
+            
+            <textarea id="response" name="response" rows="10" cols="50" placeholder="future AI response go here!!!"></textarea>
+            
+            <div id="buttonRow">
+                <button id="reset" type="submit">Reset Entry</button>
+                <button id="save" type="submit">Save & Begin New</button>
+            </div>
+            
         </aside>
+            
         </div>
+        <script src="diary.js" defer></script>
     </body>
 </html>

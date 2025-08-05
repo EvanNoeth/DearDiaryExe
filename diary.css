@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+
 
 *{
     margin:0;
@@ -13,7 +14,7 @@
 
 
 html {
-    font-family: Poppins, Segou UI, sans-serif;
+    font-family: Indie flower;
     font-size:12pt;
     color: var(--text-color);
     text-align:center;
@@ -26,25 +27,27 @@ body {
     display:flex;
     align-items:center;
     justify-content:center;
+    overflow-x:scroll;
 }
 
 .wrapper{
     box-sizing:border-box;
-    background: url("https://i.imgur.com/X2SckzJ.jpeg") no-repeat;
+    background: url("https://i.imgur.com/KSBu4D9.gif") no-repeat;
     background-size: cover;          
     background-position: center;    
     width: 1200px;   
     min-width:1200px;
+    max-width: 1200px;
     height: d700px;    
     min-height: 700px;
     display:flex;
-    
 }
 
 #leftSide, #rightSide {
     display:flex;
     width:40%;
     margin:80px;
+    margin-top:50px;
     align-items:center;
     flex-direction:column;
     padding:20px;
@@ -52,10 +55,89 @@ body {
 
 #leftSide {
     order:1;
-    background-color:blue;
+    
 }
+
+    #entriesList {
+        padding:10px;
+        margin-top:50px;
+        font-size: 20px;
+        height:493px;
+        width:350px;
+        overflow-y:scroll;
+    }
+
+        #entriesList li{
+            list-style: none;
+            margin:15px;
+        }
+
+        #entriesList li a{
+            text-decoration: none;
+            color:black;
+        }
+
+        #entriesList li a:hover{
+            color:red;
+        }
 
 #rightSide {
     order:2;
-    background-color:red;
 }
+
+    #date {
+        font-size:20px;
+        font-weight:700;
+        letter-spacing: 2px;
+    }
+
+    #title {
+        margin-top:25px;
+        font-size:15px;
+        font-family: Indie flower;
+        letter-spacing: 2px;
+    }
+
+    #textbox, #response {
+        resize: none;
+        padding:5px;
+        margin:10px;
+    }
+
+    #textbox {
+        margin-top:10px;
+        font-family: Indie flower;
+        font-size:15px;
+        letter-spacing: 2px;
+    }
+
+    #submit, #reset, #save {
+        padding: 5px;
+        border-radius: 10px;
+        height: 40px; 
+        font-size: 11px; 
+        transition: all 0.3s ease;
+    }
+
+    #reset {
+        width:100px;
+    }
+
+    #save {
+        width:140px;
+    }
+
+    #submit:hover, #save:hover, #reset:hover{
+        background-color: black;
+        color:white;
+        font-family: Indie flower;
+        font-size:15px;
+    }
+
+    #buttonRow{
+        display: flex;
+        justify-content: center;
+        gap: 150px;
+        margin-top: 15px;
+    }
+
