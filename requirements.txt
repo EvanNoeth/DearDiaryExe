@@ -5,3 +5,4 @@ bcrypt
 numpy
 openai
 python-dotenv
+gunicorn
