@@ -56,7 +56,6 @@ form.addEventListener('submit', async (e) => {
 function getLoginFormErrors(username, password){
     let errors= [];
     if(username ==='' || username ==null){
-        errors.push('Username is required');
         username_input.parentElement.classList.add('incorrect');
     }
     if(password ==='' || password ==null){

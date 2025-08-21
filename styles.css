@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+
 :root{
     --accent-color:#6a82ff;
     --base-color:black;
@@ -13,7 +14,6 @@
 
 html {
     font-family: Poppins, Segou UI, sans-serif;
-    font-size:12pt;
     color: var(--text-color);
     text-align:center;
 }
@@ -39,7 +39,6 @@ body {
     align-items:center;
     justify-content:center;
     margin:15px;
-    
 }
 
 h1 {
@@ -74,7 +73,6 @@ form {
     flex-direction:column;
     align-items:center;
     gap:10px;
-     
     
 }
 
@@ -82,7 +80,8 @@ form > div {
     width:100%;
     display:flex;
     justify-content:center;
-      
+    font-size: 20px;
+    font-family: Indie flower;
 }
 
 form label {
@@ -107,6 +106,7 @@ form input {
     border: 2px solid var(--input-color);
     background-color: var(--input-color);
     transition:150ms ease;
+    letter-spacing: 2px;
 }
 
 form input:hover {
@@ -177,5 +177,14 @@ form div.incorrect input {
     border-color:red;
 }
 #error-message {
-    color:red; 
+    color:white; 
+}
+
+#error-message{
+    margin-left: 60px;
+    margin-top:15px;
+    background-color: red;
+    border-radius: 15px;
+    width: 54%;
+    min-width: 54%;
 }
