@@ -48,6 +48,7 @@ if (form) {
                 error_message.innerText = result.error || "Something went wrong";
             } else {
                 alert(result.message);
+                localStorage.setItem("username", username_input.value);
                 window.location.href = "/DearDiaryExe/diary.html"; //redirect to diary
             }
         } catch (err) {
