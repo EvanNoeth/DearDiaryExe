@@ -29,9 +29,10 @@ form.addEventListener('submit', async (e) => {
     }
 
     try {
+        const API_BASE = "https://deardiaryexe.onrender.com"
         const endpoint = email_input 
-            ? "http://127.0.0.1:5000/signup" 
-            : "http://127.0.0.1:5000/login";
+            ? `${API_BASE}/signup` 
+            : `${API_BASE}/login`;
 
         const response = await fetch(endpoint, {
             method: "POST",
@@ -45,7 +46,7 @@ form.addEventListener('submit', async (e) => {
             error_message.innerText = result.error || "Something went wrong";
         } else {
             alert(result.message);
-            window.location.href = "http://127.0.0.1:5500/diary.html"; //redirect to diary
+            window.location.href = "/DearDiaryExe/diary.html"; //redirect to diary
         }
     } catch (err) {
         console.error(err);
