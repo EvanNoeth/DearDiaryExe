@@ -17,7 +17,7 @@ CORS(app)
 openai_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def get_embedding(text):
-    response = openai_client.embeddings.create(model="text-embedding-3-small", input=text)  # Updated API call
+    response = openai_client.embeddings.create(model="text-embedding-3-small", input=text)
     return response.data[0].embedding
 
 def cosine_similarity(a,  b):
@@ -25,25 +25,22 @@ def cosine_similarity(a,  b):
     return np.dot(a, b) / (np.linalg.norm(a)*np.linalg.norm(b))
 
 #create the api endpoint
-@app.route("/analyze", methods=["POST"]) #using post to accept journal entries
+@app.route("/analyze", methods=["POST"])
 def analyze():
-    #validate input
-    data = request.json #readable journal entry as a dictionary in python
+    data = request.json
     username = data.get("username")
-    entry_text = data.get("entry") #here we receive specifically the entry itself from the dictionary
-    
-    if not entry_text or not username:
-        return jsonify({"error": "Missing entry"}), 400 #the error sent if its empty
-    
-    user = users.find_one({"username" : username})
-    if not user:
-        return jsonify({"error" : "User not found."})
-    
-    past_entries = user.get("entries", [])
+    entry_text = data.get("entry")
+    entry_title = data.get("title", "Untitled Entry")
 
-    context = "\n".join(
-        [f"- {e['text']}" for e in past_entries[-5:]]
-    )
+    if not entry_text or not username:
+        return jsonify({"error": "Missing entry"}), 400
+
+    user = users.find_one({"username": username})
+    if not user:
+        return jsonify({"error": "User not found."}), 404
+
+    past_entries = user.get("entries", [])
+    context = "\n".join([f"- {e.get('text','')}" for e in past_entries[-5:]])
 
     prompt = f"""
     You are a sentient diary. The user has written many entries.
@@ -55,29 +52,41 @@ def analyze():
     Respond like a thoughtful, poetic companion who reflects on their journey.
     """
 
+    reply = None
+    try:
+        response = openai_client.chat.completions.create(
+            model="gpt-5",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=1
+        )
+        reply = response.choices[0].message.content
+    except Exception as e:
+        #Log server-side; return a friendly fallback
+        print("OpenAI error:", e)
+        reply = "I saved your entry. Im having trouble thinking right now, but Ill reflect with you next time."
 
-    #get the response from gpt
-    response = openai_client.chat.completions.create(
-        model="gpt-5",
-        messages=[{"role": "user", "content": prompt}],
-        temperature=1
-    )
-    reply = response.choices[0].message.content  # Fixed response parsing
-
+    #Save regardless of AI success
+    now = datetime.now(timezone.utc)
     users.update_one(
         {"username": username},
         {"$push": {"entries": {
-        "text": entry_text, 
-        "date": datetime.now(timezone.utc)
+            "title": entry_title,
+            "text": entry_text,
+            "date": now
         }}}
     )
 
-    #return gpt's response to the client
+    #Send back updated entries list (append the new one locally)
     return jsonify({
-        "entry" : entry_text,
+        "title": entry_title,
+        "entry": entry_text,
         "reply": reply,
-        "entries": user["entries"] + [{"text": entry_text, "date": datetime.now(timezone.utc).isoformat()}]
-    })
+        "entries": past_entries + [{
+            "title": entry_title,
+            "text": entry_text,
+            "date": now.isoformat()
+        }]
+    }), 200
 
 uri = os.getenv("MONGO_URI") #actual key to connect as user
 
