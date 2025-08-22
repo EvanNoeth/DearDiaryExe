@@ -1,3 +1,4 @@
+const API_BASE = "https://deardiaryexe.onrender.com"
 const form=document.getElementById('form');
 const username_input=document.getElementById('username-input');
 const email_input=document.getElementById('email-input');
@@ -29,7 +30,7 @@ form.addEventListener('submit', async (e) => {
     }
 
     try {
-        const API_BASE = "https://deardiaryexe.onrender.com"
+        
         const endpoint = email_input 
             ? `${API_BASE}/signup` 
             : `${API_BASE}/login`;
