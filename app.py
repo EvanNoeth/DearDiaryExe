@@ -11,6 +11,11 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 load_dotenv()
 
+#make past entries clickable (could be via a drop down box with the entry in it)
+#Remove the ability to write text in the AI response chatbox.
+#Add loading spinner when reponse is generating
+#(maybe?) set limit of uses for a user to not use all api keys
+#prompt engineer it a lil bit so it doesnt use a zillion 
 
 app = Flask(__name__)
 CORS(app)
@@ -42,14 +47,15 @@ def analyze():
     past_entries = user.get("entries", [])
     context = "\n".join([f"- {e.get('text','')}" for e in past_entries[-5:]])
 
-    prompt = f"""
+    #create the actual prompt itself for gpt to understand how to respond to entry
+    prompt = f""" 
     You are a sentient diary. The user has written many entries.
     Here are their recent entries:
     {context}
 
     Now they write a new one: "{entry_text}"
 
-    Respond like a thoughtful, poetic companion who reflects on their journey.
+    You are a playful little diary. Respond to the user's latest entry with empathy, symbolism, and humor unless its about something really serious, in which case you will respond with great levels of sympathy.
     """
 
     reply = None
@@ -61,22 +67,23 @@ def analyze():
         )
         reply = response.choices[0].message.content
     except Exception as e:
-        #Log server-side; return a friendly fallback
+        #Log server side return a friendly fallback
         print("OpenAI error:", e)
         reply = "I saved your entry. Im having trouble thinking right now, but Ill reflect with you next time."
 
-    #Save regardless of AI success
+    #save regardless of AI success
     now = datetime.now(timezone.utc)
     users.update_one(
         {"username": username},
         {"$push": {"entries": {
             "title": entry_title,
             "text": entry_text,
+            "reply" : reply,
             "date": now
         }}}
     )
 
-    #Send back updated entries list (append the new one locally)
+    #send back updated entries list (append the new one locally)
     return jsonify({
         "title": entry_title,
         "entry": entry_text,
