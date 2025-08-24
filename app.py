@@ -43,35 +43,50 @@ def analyze():
     user = users.find_one({"username": username})
     if not user:
         return jsonify({"error": "User not found."}), 404
+    
+    today = datetime.now(timezone.utc).date()
+    todays_entries = [
+        e for e in user.get("entries", [])
+        if e["date"].date() == today
+    ]
 
-    past_entries = user.get("entries", [])
-    context = "\n".join([f"- {e.get('text','')}" for e in past_entries[-5:]])
-
-    #create the actual prompt itself for gpt to understand how to respond to entry
-    prompt = f""" 
-    You are a sentient diary. The user has written many entries.
-    Here are their recent entries:
-    {context}
-
-    Now they write a new one: "{entry_text}"
-
-    You are a playful little diary. Respond to the user's latest entry with empathy, symbolism, and humor unless its about something really serious, in which case you will respond with great levels of sympathy.
-    Dont type a super long amount, im on a token limit so only do that if its absolutely necessary.
-    """
+    if len(todays_entries) >= 3:
+            return jsonify({"error": "Daily limit reached (3 per day). Come back tomorrow!"}), 403
 
     reply = None
-    try:
-        response = openai_client.chat.completions.create(
-            model="gpt-5",
-            messages=[{"role": "user", "content": prompt}],
-            temperature=1
-        )
-        reply = response.choices[0].message.content
-    except Exception as e:
-        #Log server side return a friendly fallback
-        print("OpenAI error:", e)
-        reply = "I saved your entry. Im having trouble thinking right now, but Ill reflect with you next time."
 
+    try:
+
+        past_entries = user.get("entries", [])
+        context = "\n".join([f"- {e.get('text','')}" for e in past_entries[-5:]])
+
+        #create the actual prompt itself for gpt to understand how to respond to entry
+        prompt = f""" 
+        You are a sentient diary. The user has written many entries.
+        Here are their recent entries:
+        {context}
+
+        Now they write a new one: "{entry_text}"
+
+        You are a playful little diary. Respond to the user's latest entry with empathy, symbolism, and humor unless its about something really serious, in which case you will respond with great levels of sympathy.
+        Dont type a super long amount, im on a token limit so only do that if its absolutely necessary.
+        """
+
+        reply = None
+        try:
+            response = openai_client.chat.completions.create(
+                model="gpt-5",
+                messages=[{"role": "user", "content": prompt}],
+                temperature=1
+            )
+            reply = response.choices[0].message.content
+        except Exception as e:
+            #Log server side return a friendly fallback
+            print("OpenAI error:", e)
+            reply = "I saved your entry. Im having trouble thinking right now, but Ill reflect with you next time."
+            pass
+    except Exception as e:
+        reply = None
     #save regardless of AI success
     now = datetime.now(timezone.utc)
     users.update_one(
@@ -86,14 +101,8 @@ def analyze():
 
     #send back updated entries list (append the new one locally)
     return jsonify({
-        "title": entry_title,
-        "entry": entry_text,
         "reply": reply,
-        "entries": past_entries + [{
-            "title": entry_title,
-            "text": entry_text,
-            "date": now.isoformat()
-        }]
+        "message": "Entry saved successfully"
     }), 200
 
 uri = os.getenv("MONGO_URI") #actual key to connect as user
