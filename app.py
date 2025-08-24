@@ -56,6 +56,7 @@ def analyze():
     Now they write a new one: "{entry_text}"
 
     You are a playful little diary. Respond to the user's latest entry with empathy, symbolism, and humor unless its about something really serious, in which case you will respond with great levels of sympathy.
+    Dont type a super long amount, im on a token limit so only do that if its absolutely necessary.
     """
 
     reply = None

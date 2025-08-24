@@ -93,6 +93,10 @@
 
     const payload = { username, entry: text, title };
 
+    const loading = document.getElementById("loading");
+    submitBtn.disabled = true;
+    loading.style.display = "inline-block";
+
     try { //POST entry to /analyze (backend saves + ai responds)
       //console.log("Submitting entry to /analyze…", payload);
       const res = await fetch(`${API_BASE}/analyze`, {
@@ -114,6 +118,9 @@
     } catch (err) {
       //console.error("Error submitting entry:", err);
       responseBox.value = "Network error. Try again later.";
+    } finally {
+      submitBtn.disabled = false;
+      loading.style.display = "none";
     }
   }
 
