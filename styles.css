@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
 
 :root{
-    --accent-color:#6a82ff;
+    --accent-color:#d80000;
     --base-color:black;
     --text-color:white;
     --input-color:#e4e4e4;
@@ -20,7 +20,7 @@ html {
 
 body {
     min-height:100vh;
-    background-color:gray;
+    background: url("https://i.imgur.com/3HxgNMs.jpeg") center;
     background-size:cover;
     overflow:hidden;
     display:flex;
@@ -29,30 +29,15 @@ body {
 }
 
 .wrapper {
-    box-sizing:border-box;
-    background: url("https://i.imgur.com/HpWYeh9.jpeg");
-    height:103vh;
     width: max(40%, 600px);
-    padding:10px;
+    margin-top:460px;
+    margin-left:40px;
     display:flex;
     flex-direction:column;
     align-items:center;
     justify-content:center;
-    margin:15px;
 }
 
-h1 {
-    font-size:3rem;
-    font-weight:900;
-    margin-bottom:70px;
-    margin-left:60px;
-    text-shadow:
-                0 0 5px #000000,
-                0 0 10px #000000,
-                0 0 20px #000000,
-                0 0 40px #000000,
-                0 0 0 #000000;
-}
 
 h2 {
     margin-left:60px;
@@ -66,14 +51,12 @@ h2 {
 
 form {
     width:min(400px, 100%);
-    margin-top:20px;
-    margin-bottom:50px;
+    margin-bottom:25px;
     margin-left:60px;
     display:flex;
     flex-direction:column;
     align-items:center;
     gap:10px;
-    
 }
 
 form > div {
@@ -86,7 +69,6 @@ form > div {
 
 form label {
     flex-shrink:0;
-    height:50px;
     width:50px;
     background-color:var(--accent-color);
     fill:var(--base-color);
@@ -96,11 +78,11 @@ form label {
     align-items:center;
     border-radius: 10px 0 0 10px;
 }
+
 form input {
     box-sizing:border-box;
     flex-grow:1;
     min-width:0;
-    height:50px;
     padding:1em;
     font:inherit;
     border: 2px solid var(--input-color);
