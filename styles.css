@@ -29,7 +29,7 @@ body {
 }
 
 .wrapper {
-    background:url("https://i.imgur.com/f8ZXech.png")center center no-repeat;
+    background:url("https://i.imgur.com/uNu1Ygi.png")center center no-repeat;
     background-size: cover; 
     background-attachment: fixed; 
     width: 100vw;           
@@ -55,7 +55,7 @@ h1 {
 form {
     margin-bottom:25px;
     margin-left:80px;
-    margin-top:400px;
+    margin-top:325px;
     width: 30vw;           
     max-width: 400px;     
     min-width: 250px;     
