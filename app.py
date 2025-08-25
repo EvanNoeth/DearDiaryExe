@@ -14,6 +14,7 @@ import dns.resolver
 import uuid
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
+import traceback
 
 
 
@@ -98,6 +99,7 @@ def analyze():
         except Exception as e:
             #Log server side return a friendly fallback
             print("OpenAI error:", e)
+            traceback.print_exec()
             reply = "I saved your entry. Im having trouble thinking right now, but Ill reflect with you next time."
             pass
     except Exception as e:
