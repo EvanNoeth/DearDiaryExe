@@ -45,12 +45,20 @@ if (form) {
             const result = await response.json();
 
             if (!response.ok) {
-                error_message.innerText = result.error || "Something went wrong";
+            error_message.innerText = result.error || "Something went wrong";
             } else {
-                alert(result.message);
-                localStorage.setItem("username", username_input.value);
-                window.location.href = "/DearDiaryExe/diary.html"; //redirect to login
-            }
+                if (email_input) {
+                    //signup
+                    alert("Signup successful! Please check your email to verify your account, then log in.");
+                    window.location.href = "/DearDiaryExe/index.html";
+                } else {
+                    //logins
+                    alert("Login successful!");
+                    localStorage.setItem("username", username_input.value);
+                    window.location.href = "/DearDiaryExe/diary.html";
+                }
+}
+
         } catch (err) {
             console.error(err);
             error_message.innerText = "Network error. Try again later.";
