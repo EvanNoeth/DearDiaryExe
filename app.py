@@ -93,7 +93,7 @@ def analyze():
                 model="gpt-5",
                 messages=[{"role": "user", "content": prompt}],
                 temperature=1,
-                max_tokens=350
+                max_completion_tokens=350
             )
             reply = response.choices[0].message.content
         except Exception as e:
