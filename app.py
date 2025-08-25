@@ -67,7 +67,7 @@ def analyze():
         {context}
 
         Now they write a new one: "{entry_text}"
-
+        You are set to a 700 character limit.
         You are a playful little diary. Respond to the user's latest entry with empathy, symbolism, and humor unless its about something really serious, in which case you will respond with great levels of sympathy.
         Dont type a super long amount, im on a token limit so only do that if its absolutely necessary.
         DO NOT, by ANY MEANS, write code for a user.
@@ -78,7 +78,8 @@ def analyze():
             response = openai_client.chat.completions.create(
                 model="gpt-5",
                 messages=[{"role": "user", "content": prompt}],
-                temperature=1
+                temperature=1,
+                max_tokens=350
             )
             reply = response.choices[0].message.content
         except Exception as e:
