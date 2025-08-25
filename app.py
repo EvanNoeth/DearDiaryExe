@@ -10,6 +10,8 @@ from datetime import datetime, timezone
 from flask_cors import CORS
 from dotenv import load_dotenv
 load_dotenv()
+import dns.resolver
+
 
 #make past entries clickable (could be via a drop down box with the entry in it)
 #Remove the ability to write text in the AI response chatbox.
@@ -20,6 +22,13 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)
 openai_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+def domain_has_mx(domain): #checks if the email is real
+    try:
+        dns.resolver.resolve(domain, 'MX')
+        return True
+    except Exception:
+        return False
 
 def get_embedding(text):
     response = openai_client.embeddings.create(model="text-embedding-3-small", input=text)
@@ -122,8 +131,15 @@ def signup(): #receive the signup json and seperate the data and encode the pass
     email = data["email"]
     password = data["password"].encode("utf-8")
 
+    if not username or not email or not password:
+        return jsonify({"error" : "Missing fields"}), 400
+
     if users.find_one({"username": username}): #check the db users for the same username
         return jsonify({"error" : "Username already exists"}), 400
+    
+    domain = email.split("@")[-1]
+    if not domain_has_mx(domain):
+        return jsonify({"error" : "Invalid email domain"}), 400
     
     hashed_pw = bcrypt.hashpw(password, bcrypt.gensalt()) #one-way encryption so only hashed pw is stored
     
