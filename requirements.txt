@@ -6,3 +6,5 @@ numpy
 openai
 python-dotenv
 gunicorn
+sendgrid
+uuid

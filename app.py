@@ -11,6 +11,10 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 load_dotenv()
 import dns.resolver
+import uuid
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+
 
 
 #make past entries clickable (could be via a drop down box with the entry in it)
@@ -124,6 +128,25 @@ users = db['users']
 
 #signup and login seperate maps.
 
+def send_verification_email(email, token):
+    verify_link = f"https://deardiaryexe.onrender.com/verify?token={token}"
+    message = Mail(
+        from_email="deardiarydotexe@gmail.com",
+        to_emails=email,
+        subject="Verify your Dear Diary.exe account",
+        html_content=f"""
+        <h3>Welcome to Dear Diary.exe!</h3>
+        <p>Please verify your account by clicking the link below:</p>
+        <a href="{verify_link}">Verify My Account</a>
+        """
+    )
+    try:
+        sg = SendGridAPIClient(os.environ.get("SENDGRID_API_KEY"))
+        sg.send(message)
+    except Exception as e:
+        print("Email error:", e)
+
+
 @app.route("/signup", methods=["POST"])
 def signup(): #receive the signup json and seperate the data and encode the password
     data = request.json
@@ -137,21 +160,38 @@ def signup(): #receive the signup json and seperate the data and encode the pass
     if users.find_one({"username": username}): #check the db users for the same username
         return jsonify({"error" : "Username already exists"}), 400
     
-    domain = email.split("@")[-1]
-    if not domain_has_mx(domain):
-        return jsonify({"error" : "Invalid email domain"}), 400
     
     hashed_pw = bcrypt.hashpw(password, bcrypt.gensalt()) #one-way encryption so only hashed pw is stored
     
+    token = str(uuid.uuid4())
+
     users.insert_one({ #insert the information into the user database
         "username" : username,
         "email" : email,
         "password" : hashed_pw,
+        "verified": False,
+        "verify_token": token,
         "entries" : []
     })
 
+    send_verification_email(email, token)
     return jsonify({"message" : "User Created."})
 
+@app.route("/verify")
+def verify():
+    token = request.args.get("token")
+    if not token:
+        return "Invalid Verification Link", 400
+    
+    user = users.find_one({"verify_token": token})
+    if not user:
+        return "Invalid or expired token!", 400
+    
+    users.update_one(
+        {"_id": user["_id"]},
+        {"$set": {"verified": True}, "$unset": {"verify_token": ""}}
+    )
+    return "Account verified! You can log in! :D "
 #perform login route
 @app.route("/login", methods=["POST"])
 def login():
@@ -162,6 +202,9 @@ def login():
     user = users.find_one({"username" : username})
     if not user:
         return jsonify({"error" : "User not found."}), 400
+    
+    if not user.get("verified", False):
+        return jsonify({"error": "Please check your inbox and verify your email address before you log in."}), 403
     
     if bcrypt.checkpw(password, user["password"]):
         return jsonify({"message" : "Login Successful!"})
