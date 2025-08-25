@@ -42,7 +42,8 @@ body {
 }
 
 
-h2 {
+h1 {
+    margin-bottom:-26px;
     text-shadow:
                 0 0 5px #000000,
                 0 0 10px #000000,
@@ -62,7 +63,6 @@ form {
     flex-direction: column;
     align-items: center;
     gap: 1vh;   
-    font-size: 1vw;   
 }
 
 form > div {
@@ -149,7 +149,6 @@ a:hover {
     border-radius: 15px;
     color:black;
     padding:7px;
-     font-size: 1vw;  
 }
 
 @media(max-width:1100px){
