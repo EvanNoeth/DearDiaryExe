@@ -22,7 +22,8 @@ html {
 
 body {
     min-height:100vh;    
-    background-color:gray;
+    background:url("https://i.imgur.com/EKOUCgl.png");
+    background-size:165px;
     overflow:hidden;
     display:flex;
     align-items:center;
@@ -32,13 +33,12 @@ body {
 
 .wrapper{
     box-sizing:border-box;
-    background: url("https://i.imgur.com/KSBu4D9.gif") no-repeat;
+    background: url("https://i.imgur.com/KRdYng3.png") no-repeat;
     background-size: cover;          
     background-position: center;    
     width: 1200px;   
     min-width:1200px;
-    max-width: 1200px;
-    height: d700px;    
+    max-width: 1200px;   
     min-height: 700px;
     display:flex;
 }
@@ -46,16 +46,15 @@ body {
 #leftSide, #rightSide {
     display:flex;
     width:40%;
-    margin:80px;
     margin-top:50px;
     align-items:center;
     flex-direction:column;
-    padding:20px;
+    padding:50px;
 }
 
 #leftSide {
     order:1;
-    
+    margin-left:50px;
 }
 
     #entriesList {
@@ -83,6 +82,7 @@ body {
 
 #rightSide {
     order:2;
+    margin-right:50px;
 }
 
     #date {
@@ -155,5 +155,42 @@ body {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+#entriesList, #textbox, #response {
+    overflow: auto;  /* only show scrollbar when content exceeds container */
+}
+
+#entriesList, #textbox, #response {
+    scrollbar-width: thin;
+    scrollbar-color: #000000 #f1f1f1;
+}
+
+#entriesList::-webkit-scrollbar,
+#textbox::-webkit-scrollbar,
+#response::-webkit-scrollbar {
+    width: 12px;              /* width of vertical scrollbar */
+    height: 12px;             /* height of horizontal scrollbar */
+}
+
+#entriesList::-webkit-scrollbar-track,
+#textbox::-webkit-scrollbar-track,
+#response::-webkit-scrollbar-track {
+    background: #f1f1f1;      /* track background */
+    border-radius: 10px;
+}
+
+#entriesList::-webkit-scrollbar-thumb,
+#textbox::-webkit-scrollbar-thumb,
+#response::-webkit-scrollbar-thumb {
+    background: #000000;      /* scrollbar color */
+    border-radius: 10px;
+    border: 3px solid #f1f1f1; /* creates spacing around thumb */
+}
+
+#entriesList::-webkit-scrollbar-thumb:hover,
+#textbox::-webkit-scrollbar-thumb:hover,
+#response::-webkit-scrollbar-thumb:hover {
+    background: #5a0000;      /* darker on hover */
 }
 
