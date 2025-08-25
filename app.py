@@ -94,13 +94,11 @@ def analyze():
                 messages=[{"role": "user", "content": prompt}],
                 temperature=1
             )
-            reply = response.choices[0].message.get("content", "").strip()
-            if not reply:
-                reply = "(Saved. No AI reply.)"
-
+            reply = response.choices[0].message.content
         except Exception as e:
             #Log server side return a friendly fallback
             print("OpenAI error:", e)
+            traceback.print_exec()
             reply = "I saved your entry. Im having trouble thinking right now, but Ill reflect with you next time."
             pass
     except Exception as e:
