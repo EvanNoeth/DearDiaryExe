@@ -92,8 +92,7 @@ def analyze():
             response = openai_client.chat.completions.create(
                 model="gpt-5",
                 messages=[{"role": "user", "content": prompt}],
-                temperature=1,
-                max_completion_tokens=350
+                temperature=1
             )
             reply = response.choices[0].message.get("content", "").strip()
             if not reply:
