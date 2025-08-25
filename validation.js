@@ -49,7 +49,7 @@ if (form) {
             } else {
                 alert(result.message);
                 localStorage.setItem("username", username_input.value);
-                window.location.href = "/DearDiaryExe/diary.html"; //redirect to diary
+                window.location.href = "/DearDiaryExe/index.html"; //redirect to login
             }
         } catch (err) {
             console.error(err);
