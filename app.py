@@ -175,7 +175,7 @@ def signup(): #receive the signup json and seperate the data and encode the pass
     })
 
     send_verification_email(email, token)
-    return jsonify({"message" : "User Created."})
+    return jsonify({"message" : "Check your inbox to verify your account (probably in spam D:)"})
 
 @app.route("/verify")
 def verify():
