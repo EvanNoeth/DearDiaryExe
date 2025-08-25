@@ -64,8 +64,8 @@ def analyze():
         if e["date"].date() == today
     ]
 
-    if len(todays_entries) >= 3:
-            return jsonify({"error": "Daily limit reached (3 per day). Come back tomorrow!"}), 403
+    if len(todays_entries) >= 5:
+            return jsonify({"error": "Daily limit reached (5 per day). Come back tomorrow!"}), 403
 
     reply = None
 
